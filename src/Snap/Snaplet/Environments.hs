@@ -1,19 +1,20 @@
-module Snap.Snaplet.Environments( module Data.Configurator, lookupEnvDefault, module Snap.Snaplet.Environments.Instances ) where
-
-import           System (getArgs) 
+module Snap.Snaplet.Environments
+    ( module Data.Configurator
+    , lookupEnvDefault
+    , module Snap.Snaplet.Environments.Instances ) 
+    where
 
 import           Control.Monad.Reader
-
-import           Snap.Snaplet
 import           Data.Configurator
 import           Data.Configurator.Types
-
+import qualified Data.HashMap.Lazy                   as HM
+import           Data.List                           (filter, find)
+import qualified Data.Text                           as T
+import           Snap.Snaplet
 import           Snap.Snaplet.Environments.Instances
-
-import qualified Data.Text as T
-import qualified Data.HashMap.Lazy as HM
-import           Data.List (filter, find)
+import           System.Environment                  (getArgs)
 import           Text.Regex.TDFA
+
 
 -- | This function takes current env subconfig and at its base
 --   looks up given name
