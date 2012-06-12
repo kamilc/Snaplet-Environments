@@ -7,7 +7,7 @@ Name:                snaplet-environments
 -- The package version. See the Haskell package versioning policy
 -- (http://www.haskell.org/haskellwiki/Package_versioning_policy) for
 -- standards guiding when and how versions should be incremented.
-Version:             0.1
+Version:             0.2
 
 -- A short (one-line) description of the package.
 Synopsis:            Provides ability to easly read configuration based on given app environment given at command line, envs are defined in app configuration file
@@ -52,19 +52,27 @@ Library
   
   -- Packages needed in order to build this package.
   Build-depends:
-    base >= 4 && < 5,
-    snap == 0.7.*,
-    snap-core  == 0.7.*,
-    mtl >= 2 && < 3,
-    configurator >= 0.2 && < 0.3,
-    regex-tdfa >= 1.1.8 && < 1.2, 
-    unordered-containers >= 0.1.4.3 && < 0.2,
-    text >= 0.11 && < 0.12,
-    bson >= 0.1.6 && < 0.2
+    base                 >= 4 && < 5,
+    snap                 == 0.8.*,
+    snap-core            == 0.8.*,
+    mtl                  >= 2 && < 3,
+    configurator         >= 0.2 && < 0.3,
+    regex-tdfa           >= 1.1.8 && < 1.2, 
+    unordered-containers >= 0.1.4 && < 0.2,
+    text                 >= 0.11 && < 0.12,
+    bson                 >= 0.1.7 && < 0.2
   
   -- Extra tools (e.g. alex, hsc2hs, ...) needed to build the source.
   -- Build-tools:    
   
+  if impl(ghc >= 6.12.0)
+    ghc-options: -threaded -Wall -fwarn-tabs -funbox-strict-fields -O2
+                 -fno-warn-orphans -fno-warn-unused-do-bind
+                 -fno-spec-constr-count
+  else
+    ghc-options: -threaded -Wall -fwarn-tabs -funbox-strict-fields -O2
+                 -fno-warn-orphans
+
   extensions: 
       OverloadedStrings
     , FlexibleInstances
