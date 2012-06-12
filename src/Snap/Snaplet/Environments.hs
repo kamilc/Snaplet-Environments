@@ -1,5 +1,7 @@
 module Snap.Snaplet.Environments
     ( module Data.Configurator
+    , lookupConfig
+    , lookupConfigDefault
     , lookupEnv
     , lookupEnvDefault
     , module Snap.Snaplet.Environments.Instances ) 
@@ -17,8 +19,24 @@ import           Snap.Snaplet.Environments.Instances
 import           System.Environment                  (getArgs)
 import           Text.Regex.TDFA
 
+-----------------------------------------------------------
+-- 
+
+lookupConfig :: (MonadIO (m b v), MonadSnaplet m, Configured a) => Name -> m b v (Maybe a)
+lookupConfig name = do
+    config <- getSnapletUserConfig
+    liftIO $ Data.Configurator.lookup config name
+
+lookupConfigDefault :: (MonadIO (m b v), MonadSnaplet m, Configured a) 
+                          => Name  -- ^ Key
+                          -> a       -- ^ default value
+                          -> m b v a
+lookupConfigDefault name def = liftM (fromMaybe def) (lookupConfig name)
+
+
 
 -----------------------------------------------------------
+-- Look up value under environments sub group.
 
 
 -- | Look up a given name without default value.
@@ -49,6 +67,7 @@ getCurrentEnv cfg = do
   case mopt of
     Nothing  -> do
       hm <- liftIO $ getMap cfg
+      liftIO $ print hm
       case filter (\k -> (T.unpack k) =~ ("app.environments." :: String)) $ HM.keys hm of
         []     -> error "You have to put at least one env definition in your config file."
         (x:_) -> return $ T.unpack $ (T.split (== '.') x) !! 2
