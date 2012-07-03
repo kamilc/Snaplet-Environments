@@ -58,7 +58,7 @@ Library
     mtl                  >= 2 && < 3,
     configurator         >= 0.2 && < 0.3,
     regex-tdfa           >= 1.1.8 && < 1.2, 
-    unordered-containers >= 0.1.4 && < 0.2,
+    unordered-containers >= 0.2 && < 0.3,
     text                 >= 0.11 && < 0.12,
     bson                 >= 0.1.7 && < 0.2
   

@@ -67,7 +67,6 @@ getCurrentEnv cfg = do
   case mopt of
     Nothing  -> do
       hm <- liftIO $ getMap cfg
-      liftIO $ print hm
       case filter (\k -> (T.unpack k) =~ ("app.environments." :: String)) $ HM.keys hm of
         []     -> error "You have to put at least one env definition in your config file."
         (x:_) -> return $ T.unpack $ (T.split (== '.') x) !! 2
